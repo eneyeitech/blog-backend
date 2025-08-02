@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Nigeria's Hope",
-  "author": "eneye",
-  "url": "me/me",
-  "likes": 6
+  "title": "Tinubu Hope of a Nation",
+  "author": "Bayo M.",
+  "url": "aso/me",
+  "likes": 1
 }
