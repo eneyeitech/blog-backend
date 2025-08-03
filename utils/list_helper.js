@@ -41,9 +41,33 @@ const mostBlogs = (blogs) => {
     
 }
 
+const mostLikes = (blogs) => {
+    const authors = blogs.map((blog) => blog.author)
+    console.log('author', authors)
+    const authorsBlogCount = blogs.reduce((arr, blog) => {
+        const index = arr.findIndex(o => o.author === blog.author)
+        if (index === -1) {
+            arr.push({
+                "author": blog.author,
+                "likes": blog.likes
+            })
+        } else {
+            arr[index].likes = arr[index].likes + blog.likes;
+            console.log('rr', arr)
+        }
+        return arr;
+    }, [])
+
+    const highest = Math.max(...authorsBlogCount.map((a) => a.likes ))
+    console.log('high', highest)
+    return authorsBlogCount.find((a) => a.likes === highest)
+    
+}
+
 module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
 }

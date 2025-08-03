@@ -1,6 +1,6 @@
 const { test, describe } = require('node:test')
 const assert = require('node:assert')
-const { totalLikes, favoriteBlog, mostBlogs } = require('../utils/list_helper')
+const { totalLikes, favoriteBlog, mostBlogs, mostLikes } = require('../utils/list_helper')
 
 describe('total likes', () => {
     test('of empty lists is zero', () => {
@@ -95,7 +95,7 @@ describe("favorite", () => {
     })
 })
 
-describe("Top Authors", () => {
+describe("Author with most blogs", () => {
     const h = {
                 _id: '5a422aa71b54a676234d17f8',
                 title: 'Go To Statement Considered Harmful',
@@ -128,6 +128,43 @@ describe("Top Authors", () => {
         const expected = {author: "eneye", blogs: 2}
         console.log('end', expected)
         const result = mostBlogs(listWithMoreThanOneBlog)
+        assert.deepStrictEqual(result, expected)
+    })
+})
+
+describe("Author with most likes", () => {
+    const h = {
+                _id: '5a422aa71b54a676234d17f8',
+                title: 'Go To Statement Considered Harmful',
+                author: 'eneye',
+                url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
+                likes: 5,
+                __v: 0
+            };
+
+    test('author with most likes 8', () => {
+        const listWithMoreThanOneBlog = [
+            {
+                _id: '5a422aa71b54a676234d17f8',
+                title: 'Go To Statement Considered Harmful',
+                author: 'eneye',
+                url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
+                likes: 3,
+                __v: 0
+            },
+            {
+                _id: '5a422aa71b54a676234d17f8',
+                title: 'Go To Statement Considered Harmful',
+                author: 'Edsger W. Dijkstra',
+                url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
+                likes: 2,
+                __v: 0
+            }, h
+            
+        ]
+        const expected = {author: "eneye", likes: 8}
+        console.log('end', expected)
+        const result = mostLikes(listWithMoreThanOneBlog)
         assert.deepStrictEqual(result, expected)
     })
 })
