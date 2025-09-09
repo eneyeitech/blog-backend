@@ -36,6 +36,29 @@ test('unique identifier property of blog posts is named id', async () => {
   assert.strictEqual(blog._id, undefined)
 })
 
+test('a valid blog can be added ', async () => {
+  const newBlog = {
+  "title": "Tinubu Hope of a Nation",
+  "author": "Bayo M.",
+  "url": "aso/me",
+  "likes": 1
+}
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+
+  const blogsAtEnd = await helper.blogsInDb()
+  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
+
+
+  const titles = blogsAtEnd.map(n => n.title)
+  assert(titles.includes('Tinubu Hope of a Nation'))
+})
+
 
 after(async () => {
   await mongoose.connection.close()
