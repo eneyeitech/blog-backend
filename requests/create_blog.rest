@@ -3,7 +3,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY4YzFhM2UxM2I0ZDcwYTg2MzA4ZDVjYiIsImlhdCI6MTc1NzUyMzAxMH0.sIhtIWs7GoKYPQNrDjYOw-UDl2fHCXHDUnUGFF6CGWQ
 
 {
-  "title": "My country and DLC",
+  "title": "The night is cold",
   "author": "AEA",
   "url": "aea/me",
   "likes": 1
