@@ -42,24 +42,22 @@ const tokenExtractor = (request, response, next) => {
 }
 
 const userExtractor = async (request, response, next) => {
-  // If no token was extracted, just skip attaching user
   if (!request.token) {
-    request.user = null
-    return next()
+    return response.status(401).json({ error: 'token missing' })
   }
 
-  // Verify token (throws if invalid, errorHandler catches it)
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
   if (!decodedToken.id) {
-    // This will bubble into errorHandler since no user id in token
-    throw new jwt.JsonWebTokenError('token invalid')
+    return response.status(401).json({ error: 'token invalid' })
   }
 
-  // Find user from DB
   const user = await User.findById(decodedToken.id)
-  request.user = user
+  if (!user) {
+    return response.status(401).json({ error: 'user not found' })
+  }
 
+  request.user = user
   next()
 }
 
