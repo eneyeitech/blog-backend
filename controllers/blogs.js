@@ -9,19 +9,6 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs)
 })
 
-/**blogsRouter.get('/', (request, response) => {
-  Blog.find({}).then((blogs) => {
-    response.json(blogs)
-  })
-})*/
-
-/*const getTokenFrom = request => {
-  const authorization = request.get('authorization')
-  if (authorization && authorization.startsWith('Bearer ')) {
-    return authorization.replace('Bearer ', '')
-  }
-  return null
-}*/
 
 blogsRouter.post('/', userExtractor, async (request, response) => {
   const body = request.body
@@ -46,21 +33,6 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
-/**blogsRouter.post('/', (request, response) => {
-
-  const blog = new Blog(request.body)
-
-  blog.save().then((result) => {
-    response.status(201).json(result)
-  })
-})*/
-
-/*blogsRouter.delete('/:id', async (request, response) => {
-  const { id } = request.params
-
-  await Blog.findByIdAndDelete(id)
-  response.status(204).end()
-})*/
 
 blogsRouter.delete('/:id', userExtractor, async (request, response) => {
   const user = request.user
@@ -79,7 +51,7 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
 })
 
 
-blogsRouter.put('/:id', async (request, response) => {
+/*blogsRouter.put('/:id', async (request, response) => {
   const { id } = request.params
   const { title, author, url, likes } = request.body
 
@@ -94,7 +66,25 @@ blogsRouter.put('/:id', async (request, response) => {
   } else {
     response.status(404).end()
   }
+})*/
+
+blogsRouter.put('/:id', async (request, response) => {
+  const { id } = request.params
+  const { title, author, url, likes, user } = request.body
+
+  const updatedBlog = await Blog.findByIdAndUpdate(
+    id,
+    { title, author, url, likes, user },   // include user reference
+    { new: true, runValidators: true, context: 'query' }
+  ).populate('user', { username: 1, name: 1 }) // populate for frontend
+
+  if (updatedBlog) {
+    response.json(updatedBlog)
+  } else {
+    response.status(404).end()
+  }
 })
+
 
 
 module.exports = blogsRouter
